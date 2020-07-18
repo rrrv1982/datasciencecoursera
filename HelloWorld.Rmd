@@ -1,0 +1,22 @@
+---
+title: "HelloWorld.md"
+author: "Ronald Ruiz"
+date: "18/7/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is a markdown file
+
+```{r cars}
+print("Hello World")
+```
+
+
+
+
