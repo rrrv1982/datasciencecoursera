@@ -120,3 +120,55 @@ x[x > "a"]
 #Subsetting logico
 u = x > "a"
 u
+
+#Subsetting de matrices
+x = matrix(1:6, 2,3)
+x
+x[2,3]
+x[1, ]
+x[2, ]
+x[2, , drop = FALSE]
+
+#Subsetting coicidencia parcial
+x = list(aardvark = 1:5)
+x$aardvark
+x[["a"]]
+x[["a", exact = FALSE]]
+
+#Subsetting eliminando valores perdidos
+
+#usando is.na
+x = c(1,2,NA,4,NA,5)
+bad = is.na(x)
+x[!bad]
+
+#Varios vectores y utilizar subsetting
+x = c(1,2,NA,4,NA,5)
+y = c("a","b", NA, "d", NA, "f")
+good = complete.cases(x, y)
+good
+x[good]
+y[good]
+
+#eliminar datos datafram
+airquality
+airquality[1:6, ]
+good = complete.cases(airquality)
+airquality[good, ][1:6, ]
+
+
+##Operaciones vectorizadas
+#operaciones mas eficientes vector
+x = 1:4; y = 6:9
+x+y
+x >2
+x == 8
+x * y
+x / y
+
+#Operaciones entre matrices
+x = matrix(1:4, 2, 2); y = matrix(rep(10, 4), 2, 2)
+x * y
+x / y
+x %*% y #multiplicacion matricial
+
