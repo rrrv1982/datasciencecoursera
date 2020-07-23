@@ -223,3 +223,11 @@ subset(airquality$Ozone, airquality$Month == 5)
 x <- c(17, 14, 4, 5, 13, 12, 10) 
 a = x[x > 10]== 4
 a
+
+
+##EJERCICIO PRACTIVO CON SWIRL
+install.packages("swirl")
+packageVersion("swirl")
+library(swirl)
+install_from_swirl("R Programming")
+swirl()
