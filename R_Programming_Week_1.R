@@ -151,15 +151,26 @@ x[good]
 y[good]
 
 #eliminar datos datafram
-airquality
+airquality[1:2, ]
 airquality[1:6, ]
 good = complete.cases(airquality)
-airquality[good, ][1:6, ]
+good = complete.cases(airquality$Ozone)
+dim(good)
+airquality$Ozone[good, ][1, ]
+dim(airquality)
+airquality[152:153, ]
+airquality[47, ]
 
+bad = is.na(airquality$Ozone)
+c = !bad
+airquality[c]
+sapply(airquality, function(x) sum(is.na(x)))
 
+datos <- airquality[!is.na(airquality$Ozone),]
+mean(datos)
 ##Operaciones vectorizadas
 #operaciones mas eficientes vector
-x = 1:4; y = 6:9
+x = 1:4; y = 2:3
 x+y
 x >2
 x == 8
@@ -172,3 +183,43 @@ x * y
 x / y
 x %*% y #multiplicacion matricial
 
+x = 4L
+class(x)
+
+x = c(4, "a", TRUE)
+class(x)
+
+x = c(1,3,5); y = c(3,2,10)
+rbind(x,y)
+
+v = list(2,"a", "b", TRUE)
+v
+v[[2]]
+
+x <- c(3, 5, 1, 10, 12, 6)
+x<6
+x[x>0]<-6
+x
+a = x[x<6] == 0
+a
+
+airquality[1:2, ]
+airquality[1:6, ]
+good = complete.cases(airquality)
+good = complete.cases(airquality$Ozone)
+dim(good)
+airquality$Ozone[good, ][1, ]
+dim(airquality)
+airquality[152:153, ]
+airquality[47, ]
+
+mean(airquality[, "Ozone"], na.rm = TRUE)
+subset(airquality, airquality$Ozone > 31 & airquality$Temp > 90)
+mean(subset(airquality$Solar.R, airquality$Ozone > 31 & airquality$Temp > 90))
+
+mean(subset(airquality$Temp, airquality$Month == 6))
+subset(airquality$Ozone, airquality$Month == 5)
+
+x <- c(17, 14, 4, 5, 13, 12, 10) 
+a = x[x > 10]== 4
+a
