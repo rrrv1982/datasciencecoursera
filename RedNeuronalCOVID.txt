@@ -1,0 +1,208 @@
+https://www.datos.gov.co/Salud-y-Protecci-n-Social/Casos-positivos-de-COVID-19-en-Colombia/gt2j-8ykr
+
+import tensorflow as tf
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from tensorflow import keras
+
+covid_df = pd.read_csv("Casos_positivos_de_COVID-19_en_Colombia.csv", low_memory=False) 
+#covid_df = pd.read_csv("Casos_positivos_de_COVID-19_en_Colombia-old.csv", low_memory=False) 
+
+covid_df
+
+covid_df.info()
+
+covid_df['Fecha de notificación']= pd.to_datetime(covid_df['Fecha de notificación']) 
+covid_df['Fecha de muerte']= pd.to_datetime(covid_df['Fecha de muerte']) 
+covid_df['Fecha diagnostico']= pd.to_datetime(covid_df['Fecha diagnostico']) 
+covid_df['Fecha diagnostico']= pd.to_datetime(covid_df['Fecha diagnostico']) 
+covid_df['Fecha recuperado']= pd.to_datetime(covid_df['Fecha recuperado']) 
+covid_df['fecha reporte web']= pd.to_datetime(covid_df['fecha reporte web']) 
+covid_df['FIS']= pd.to_datetime(covid_df['FIS']) 
+covid_df.info()
+
+
+covid_df
+
+
+casos_fis_covid_df = pd.crosstab(covid_df['Fecha diagnostico'], columns='count').reset_index()
+casos_fis_covid_df.tail()
+
+
+plt.figure(figsize=(20,8))
+plt.title("Evolución del Covid-19 en Colombia",fontsize=25)
+plt.plot(casos_fis_covid_df['Fecha diagnostico'],casos_fis_covid_df['count'])
+plt.legend(["Número de casos reportados durante el tiempo"],fontsize=15)
+plt.xlabel("Fecha",fontsize=15)
+plt.ylabel("Número de casos",fontsize=15)
+plt.grid()
+plt.show()
+
+print('Típo: ' + str(type(covid_df['ID de caso'].min())))
+print('Mínimo: ' + str(covid_df['ID de caso'].min()))
+print('Máximo: ' + str(covid_df['ID de caso'].max()))
+print('Shape:' + str(covid_df['ID de caso'].shape))
+
+
+
+
+Análisis de la columna 'Fecha de notificación'
+casos_covid_df = pd.crosstab(covid_df['Fecha de notificación'], columns='count').reset_index()
+plt.figure(figsize=(20,8))
+plt.title("Evolución del Covid-19 en Colombia",fontsize=25)
+plt.plot(casos_covid_df['Fecha de notificación'],casos_covid_df['count'])
+plt.legend(["Número de casos reportados durante el tiempo"],fontsize=15)
+plt.xlabel("Fecha",fontsize=15)
+plt.ylabel("Número de casos",fontsize=15)
+plt.grid()
+plt.show()
+
+Análisis de la columna 'Ciudad de ubicación'
+casos_ciudad = pd.crosstab(covid_df['Ciudad de ubicación'], columns='count').reset_index().sort_values(by=['count'], ascending=False)
+
+casos_ciudad['fa'] = casos_ciudad['count'].cumsum()
+casos_ciudad['fr'] = (casos_ciudad['count']/casos_ciudad['count'].sum()) * 100
+casos_ciudad['fra'] = casos_ciudad['fr'].cumsum()
+
+casos_ciudad.head(20)
+
+
+Análisis de la columna 'Departamento o Distrito'
+casos_departamento = pd.crosstab(covid_df['Departamento o Distrito '], columns='count').reset_index().sort_values(by=['count'], ascending=False)
+
+casos_departamento['fa'] = casos_departamento['count'].cumsum()
+casos_departamento['fr'] = (casos_departamento['count']/casos_departamento['count'].sum()) * 100
+casos_departamento['fra'] = casos_departamento['fr'].cumsum()
+
+casos_departamento.head(20)
+
+
+casos_departamento = pd.crosstab(covid_df['Departamento o Distrito '], columns='count').reset_index().sort_values(by=['Departamento o Distrito '], ascending=False)
+casos_departamento['fa'] = casos_departamento['count'].cumsum()
+casos_departamento['fr'] = (casos_departamento['count']/casos_departamento['count'].sum()) * 100
+casos_departamento['fra'] = casos_departamento['fr'].cumsum()
+
+
+plt.figure(figsize=(8, 10))
+plt.title("Evolución del Covid-19 en Colombia",fontsize=25)
+plt.barh(casos_departamento['Departamento o Distrito '],casos_departamento['fr'])
+plt.legend(["% Número de casos reportados por departamento"],fontsize=15)
+plt.ylabel("Departamento",fontsize=15)
+plt.xlabel("% Número de casos",fontsize=15)
+plt.grid()
+plt.show()
+
+
+Análisis de la columna 'atención'
+casos_atencion = pd.crosstab(covid_df['atención'], columns='count').reset_index().sort_values(by=['count'], ascending=False)
+
+casos_atencion['fa'] = casos_atencion['count'].cumsum()
+casos_atencion['fr'] = (casos_atencion['count']/casos_atencion['count'].sum()) * 100
+casos_atencion['fra'] = casos_atencion['fr'].cumsum()
+
+casos_atencion.head(20)
+
+
+plt.figure(figsize=(8, 10))
+plt.title("Evolución del Covid-19 en Colombia",fontsize=25)
+plt.bar(casos_atencion['atención'],casos_atencion['fr'])
+plt.legend(["% Número de casos estado atención"],fontsize=15)
+plt.ylabel("% casos en estado Atención",fontsize=15)
+plt.xlabel("% Número de casos",fontsize=15)
+plt.grid()
+plt.show()
+
+Creando tabla de frecuencia de los datos por fecha
+casos_covid_df = pd.crosstab(covid_df['Fecha diagnostico'], columns='count').reset_index()
+
+casos_covid_df = casos_covid_df[casos_covid_df['Fecha diagnostico'] < '2020-08-01']
+
+casos_covid_df
+
+Visualizar datos
+plt.figure(figsize=(20,8))
+plt.title("Evolución del Covid-19 en Colombia",fontsize=25)
+plt.plot(casos_covid_df['Fecha diagnostico'],casos_covid_df['count'])
+plt.legend(["Número de casos reportados durante el tiempo"],fontsize=15)
+plt.xlabel("Fecha",fontsize=15)
+plt.ylabel("Número de casos",fontsize=15)
+plt.grid()
+plt.show()
+
+
+Se cambia el eje de los datos por el index, interpretandose la primera fecha como el día 0, la segunda fecha como el día 1, etc...
+plt.figure(figsize=(20,8))
+plt.title("Evolución del Covid-19 en Colombia",fontsize=25)
+plt.plot(casos_covid_df.index,casos_covid_df['count'])
+plt.legend(["Número de casos reportados durante los días día 0 = 2020-02-27"],fontsize=15)
+plt.xlabel("Día",fontsize=15)
+plt.ylabel("Número de casos",fontsize=15)
+plt.grid()
+plt.show()
+
+Construyendo Red Neuronal (Modelamiento/Diseño)
+covid_model = tf.keras.Sequential([
+    keras.layers.Dense(units=5,input_shape=(1,),activation='softplus'),
+    keras.layers.Dense(units=10,activation='softplus'),
+    keras.layers.Dense(units=20,activation='softplus'),
+    keras.layers.Dense(units=40,activation='softplus'),
+    keras.layers.Dense(units=1),
+    ])
+
+Compilando Red Neuronal
+covid_model.compile(optimizer='adam', loss='mean_squared_error')
+
+Mirando el Resumen de la Red Neuronal
+covid_model.summary()
+
+Entrenando Red Neuronal
+history=covid_model.fit(casos_covid_df.index, casos_covid_df['count'], epochs=1000,verbose=0)
+
+Visualizar Resultados de la Red
+w=covid_model.get_weights()
+
+print("\nObjeto Pesos:",w)
+print('\nNumber of Weights -> '+ str(len(w)))
+print('\nw1 = ' + str(w[0][0]) +'(Weight)')
+print('w0 = ' + str(w[1])+'("Weight"->Bias)')
+
+x_test = np.linspace(casos_covid_df.index[0],casos_covid_df.index[-1])
+predecir=covid_model.predict(x_test)
+
+plt.figure(figsize=(20,8))
+plt.title("Evolución del Covid-19 en Colombia (Modelo vs Data)",fontsize=25)
+plt.plot(x_test,predecir, label="Modelo")
+plt.plot(casos_covid_df.index,casos_covid_df['count'], label="Data")
+plt.xlabel("Día",fontsize=15)
+plt.ylabel("Número de casos",fontsize=15)
+plt.legend(loc=0)
+plt.grid()
+plt.show()
+
+
+plt.figure(figsize=(20,8))
+plt.plot(history.history['loss'],'r-',label='Loss')
+plt.title('Plotting Model vs Data')
+plt.legend(loc=0)
+plt.show()
+
+
+Predecir un valor
+#Punto fuera de los datos de entrenamiento (MUY IMPORTANTE)
+day_test=[160]
+
+# Predecir valor usando el Modelo generado del entrenamiento
+pred = covid_model.predict(day_test)
+print(' La Predicción en el día 200 es '+str(day_test))
+
+plt.figure(figsize=(20,8))
+plt.title("Evolución del Covid-19 en Colombia (Modelo vs Data)",fontsize=25)
+plt.plot(x_test,predecir, label="Modelo")
+plt.plot(casos_covid_df.index,casos_covid_df['count'], label="Data")
+plt.plot(day_test,pred, 'o', label="Predicción día 160")
+plt.xlabel("Día",fontsize=15)
+plt.ylabel("Número de casos",fontsize=15)
+plt.legend(loc=0)
+plt.grid()
+plt.show()
